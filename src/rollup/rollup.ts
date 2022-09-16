@@ -33,15 +33,16 @@ export async function rollupInternal(
 	rawInputOptions: GenericConfigObject,
 	watcher: RollupWatcher | null
 ): Promise<RollupBuild> {
+	//格式化输入参数对象
 	const { options: inputOptions, unsetOptions: unsetInputOptions } = await getInputOptions(
 		rawInputOptions,
 		watcher !== null
 	);
 	initialiseTimers(inputOptions);
-
+	//创建图形
 	const graph = new Graph(inputOptions, watcher);
 
-	// remove the cache option from the memory after graph creation (cache is not used anymore)
+	// 创建图形后从内存中删除缓存选项（不再使用缓存） useCache = true
 	const useCache = rawInputOptions.cache !== false;
 	delete inputOptions.cache;
 	delete rawInputOptions.cache;
@@ -49,6 +50,7 @@ export async function rollupInternal(
 	timeStart('BUILD', 1);
 
 	try {
+		//调用插件的'buildStart'钩子函数
 		await graph.pluginDriver.hookParallel('buildStart', [inputOptions]);
 		await graph.build();
 	} catch (err) {
@@ -60,7 +62,7 @@ export async function rollupInternal(
 		await graph.pluginDriver.hookParallel('closeBundle', []);
 		throw err;
 	}
-
+	//调用插件的'buildEnd'钩子函数
 	await graph.pluginDriver.hookParallel('buildEnd', []);
 
 	timeEnd('BUILD', 1);

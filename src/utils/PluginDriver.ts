@@ -155,7 +155,7 @@ export class PluginDriver {
 		return null as any;
 	}
 
-	// parallel, ignores returns
+	// 并行，忽略返回
 	hookParallel<H extends AsyncPluginHooks & ParallelPluginHooks>(
 		hookName: H,
 		args: Parameters<PluginHooks[H]>,

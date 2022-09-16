@@ -64,11 +64,14 @@ export default class Graph {
 
 	constructor(private readonly options: NormalizedInputOptions, watcher: RollupWatcher | null) {
 		this.deoptimizationTracker = new PathTracker();
+		//缓存的modules
 		this.cachedModules = new Map();
+		//初始化的时候option.cache = undefined
 		if (options.cache !== false) {
 			if (options.cache?.modules) {
 				for (const module of options.cache.modules) this.cachedModules.set(module.id, module);
 			}
+			//初始化 pluginCache 对象
 			this.pluginCache = options.cache?.plugins || Object.create(null);
 
 			// increment access counter
@@ -77,7 +80,7 @@ export default class Graph {
 				for (const value of Object.values(cache)) value[0]++;
 			}
 		}
-
+		// watcher为null
 		if (watcher) {
 			this.watchMode = true;
 			const handleChange: WatchChangeHook = (...args) =>
@@ -90,14 +93,18 @@ export default class Graph {
 				watcher.removeListener('close', handleClose);
 			});
 		}
+		//初始化插件
 		this.pluginDriver = new PluginDriver(this, options, options.plugins, this.pluginCache);
+		//初始化作用域
 		this.scope = new GlobalScope();
 		this.acornParser = acorn.Parser.extend(...(options.acornInjectPlugins as any));
+		//初始化moduleLoader
 		this.moduleLoader = new ModuleLoader(this, this.modulesById, this.options, this.pluginDriver);
 	}
 
 	async build(): Promise<void> {
 		timeStart('generate module graph', 2);
+		//todo
 		await this.generateModuleGraph();
 		timeEnd('generate module graph', 2);
 

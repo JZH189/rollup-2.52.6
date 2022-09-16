@@ -1,7 +1,7 @@
-const name = 'victor jiang';
+const name = "victor jiang";
 
 function foo() {
-	return 'foo';
+  return "foo";
 }
 
 const fname = foo();
