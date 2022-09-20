@@ -33,7 +33,7 @@ export async function rollupInternal(
 	rawInputOptions: GenericConfigObject,
 	watcher: RollupWatcher | null
 ): Promise<RollupBuild> {
-	//格式化输入参数对象
+	//格式化inputOptions
 	const { options: inputOptions, unsetOptions: unsetInputOptions } = await getInputOptions(
 		rawInputOptions,
 		watcher !== null
@@ -113,9 +113,11 @@ async function getInputOptions(
 		throw new Error('You must supply an options object to rollup');
 	}
 	const rawPlugins = ensureArray(rawInputOptions.plugins) as Plugin[];
+	//格式化inputOptions
 	const { options, unsetOptions } = normalizeInputOptions(
 		await rawPlugins.reduce(applyOptionHook(watchMode), Promise.resolve(rawInputOptions))
 	);
+	//设置plugin.name
 	normalizePlugins(options.plugins, ANONYMOUS_PLUGIN_PREFIX);
 	return { options, unsetOptions };
 }

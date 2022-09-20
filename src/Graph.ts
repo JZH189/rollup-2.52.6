@@ -44,23 +44,23 @@ function normalizeEntryModules(
 }
 
 export default class Graph {
-	acornParser: typeof acorn.Parser;
-	cachedModules: Map<string, ModuleJSON>;
-	deoptimizationTracker: PathTracker;
-	entryModules: Module[] = [];
-	moduleLoader: ModuleLoader;
-	modulesById = new Map<string, Module | ExternalModule>();
-	needsTreeshakingPass = false;
-	phase: BuildPhase = BuildPhase.LOAD_AND_PARSE;
-	pluginDriver: PluginDriver;
-	scope: GlobalScope;
-	watchFiles: Record<string, true> = Object.create(null);
-	watchMode = false;
+	acornParser: typeof acorn.Parser;     //使用acornParser解析ast
+	cachedModules: Map<string, ModuleJSON>; //缓存的modules
+	deoptimizationTracker: PathTracker;   //path跟踪
+	entryModules: Module[] = [];          //入口模块
+	moduleLoader: ModuleLoader;          //模块加载器
+	modulesById = new Map<string, Module | ExternalModule>();   //使用Map来保存modules
+	needsTreeshakingPass = false;          //是否需要 treeshaking 令牌，默认为否
+	phase: BuildPhase = BuildPhase.LOAD_AND_PARSE;   // 构建的 phase
+	pluginDriver: PluginDriver;        // 插件驱动
+	scope: GlobalScope;               // 作用域
+	watchFiles: Record<string, true> = Object.create(null);      //被观测的files
+	watchMode = false;        //监听
 
-	private externalModules: ExternalModule[] = [];
-	private implicitEntryModules: Module[] = [];
-	private modules: Module[] = [];
-	private pluginCache?: Record<string, SerializablePluginCache>;
+	private externalModules: ExternalModule[] = [];   //外部的modules
+	private implicitEntryModules: Module[] = [];      //隐式入口模块
+	private modules: Module[] = [];                   //模块
+	private pluginCache?: Record<string, SerializablePluginCache>;   //插件缓存
 
 	constructor(private readonly options: NormalizedInputOptions, watcher: RollupWatcher | null) {
 		this.deoptimizationTracker = new PathTracker();
@@ -97,6 +97,7 @@ export default class Graph {
 		this.pluginDriver = new PluginDriver(this, options, options.plugins, this.pluginCache);
 		//初始化作用域
 		this.scope = new GlobalScope();
+		//扩展acornParser配置
 		this.acornParser = acorn.Parser.extend(...(options.acornInjectPlugins as any));
 		//初始化moduleLoader
 		this.moduleLoader = new ModuleLoader(this, this.modulesById, this.options, this.pluginDriver);

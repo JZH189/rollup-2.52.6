@@ -8,6 +8,7 @@ export default class GlobalScope extends Scope {
 
 	constructor() {
 		super();
+		//{"included":false,"name":"undefined","alwaysRendered":false,"isId":false,"isReassigned":false,"renderBaseName":null,"renderName":null}
 		this.variables.set('undefined', new UndefinedVariable());
 	}
 
