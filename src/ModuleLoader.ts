@@ -306,6 +306,7 @@ export class ModuleLoader {
 		importer: string | undefined,
 		isEntry: boolean
 	): Promise<Module> {
+		//去缓存里面找对应的模块，提升性能
 		const existingModule = this.modulesById.get(id);
 		if (existingModule instanceof Module) {
 			if (isEntry) {

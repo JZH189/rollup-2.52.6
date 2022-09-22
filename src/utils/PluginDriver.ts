@@ -92,6 +92,86 @@ export class PluginDriver {
 	) {
 		warnDeprecatedHooks(userPlugins, options);
 		this.pluginCache = pluginCache;
+		/*
+		{
+				"graph": {
+						"options": {
+								"acorn": {
+										"allowAwaitOutsideFunction": true,
+										"ecmaVersion": "latest",
+										"preserveParens": false,
+										"sourceType": "module"
+								},
+								"acornInjectPlugins": [],
+								"context": "undefined",
+								"experimentalCacheExpiry": 10,
+								"input": [
+										"c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example/index.js"
+								],
+								"makeAbsoluteExternalsRelative": true,
+								"perf": false,
+								"plugins": [],
+								"preserveEntrySignatures": "strict",
+								"preserveSymlinks": false,
+								"shimMissingExports": false,
+								"strictDeprecations": false,
+								"treeshake": {
+										"annotations": true,
+										"correctVarValueBeforeDeclaration": false,
+										"propertyReadSideEffects": true,
+										"tryCatchDeoptimization": true,
+										"unknownGlobalSideEffects": true
+								}
+						},
+						"entryModules": [],
+						"modulesById": {},
+						"needsTreeshakingPass": false,
+						"phase": 0,
+						"watchFiles": {},
+						"watchMode": false,
+						"externalModules": [],
+						"implicitEntryModules": [],
+						"modules": [],
+						"deoptimizationTracker": {
+								"entityPaths": {}
+						},
+						"cachedModules": {},
+						"pluginCache": {}
+				},
+				"options": {
+						"acorn": {
+								"allowAwaitOutsideFunction": true,
+								"ecmaVersion": "latest",
+								"preserveParens": false,
+								"sourceType": "module"
+						},
+						"acornInjectPlugins": [],
+						"context": "undefined",
+						"experimentalCacheExpiry": 10,
+						"input": [
+								"c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example/index.js"
+						],
+						"makeAbsoluteExternalsRelative": true,
+						"perf": false,
+						"plugins": [],
+						"preserveEntrySignatures": "strict",
+						"preserveSymlinks": false,
+						"shimMissingExports": false,
+						"strictDeprecations": false,
+						"treeshake": {
+								"annotations": true,
+								"correctVarValueBeforeDeclaration": false,
+								"propertyReadSideEffects": true,
+								"tryCatchDeoptimization": true,
+								"unknownGlobalSideEffects": true
+						}
+				},
+				"bundle": null,
+				"facadeChunkByModule": null,
+				"outputOptions": null,
+				"filesByReferenceId": {}
+		}
+		*/
 		this.fileEmitter = new FileEmitter(
 			graph,
 			options,

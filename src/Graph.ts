@@ -105,19 +105,21 @@ export default class Graph {
 
 	async build(): Promise<void> {
 		timeStart('generate module graph', 2);
-		//todo
+		//生成模块依赖图
 		await this.generateModuleGraph();
 		timeEnd('generate module graph', 2);
-
+	
 		timeStart('sort modules', 2);
 		this.phase = BuildPhase.ANALYSE;
+		//排序模块
 		this.sortModules();
 		timeEnd('sort modules', 2);
-
+	
 		timeStart('mark included statements', 2);
+		//收集js代码
 		this.includeStatements();
 		timeEnd('mark included statements', 2);
-
+	
 		this.phase = BuildPhase.GENERATE;
 	}
 
