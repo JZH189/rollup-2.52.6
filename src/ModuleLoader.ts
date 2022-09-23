@@ -171,16 +171,18 @@ export class ModuleLoader {
 	private addDefaultsToResolvedId(
 		resolvedId: NormalizedResolveIdWithoutDefaults | null
 	): ResolvedId | null {
+		//resolvedId => {"id":"c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example\\index.js"}
 		if (!resolvedId) {
 			return null;
 		}
+		// 标识是否为外部依赖
 		const external = resolvedId.external || false;
 		return {
 			external,
 			id: resolvedId.id,
 			meta: resolvedId.meta || EMPTY_OBJECT,
 			moduleSideEffects:
-				resolvedId.moduleSideEffects ?? this.hasModuleSideEffects(resolvedId.id, !!external),
+				resolvedId.moduleSideEffects ?? this.hasModuleSideEffects(resolvedId.id, !!external), //true
 			syntheticNamedExports: resolvedId.syntheticNamedExports ?? false
 		};
 	}
@@ -477,6 +479,7 @@ export class ModuleLoader {
 		importer: string | undefined,
 		implicitlyLoadedBefore: string | null
 	): Promise<Module> {
+		//resolveIdResult = 'c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example\\index.js'
 		const resolveIdResult = await resolveId(
 			unresolvedId,
 			importer,
