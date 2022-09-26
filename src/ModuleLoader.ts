@@ -177,6 +177,7 @@ export class ModuleLoader {
 		}
 		// 标识是否为外部依赖
 		const external = resolvedId.external || false;
+		// {"id":"c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example\\index.js","meta":{},"moduleSideEffects":true,"syntheticNamedExports":false}
 		return {
 			external,
 			id: resolvedId.id,
@@ -219,6 +220,7 @@ export class ModuleLoader {
 		timeStart('load modules', 3);
 		let source: string | SourceDescription;
 		try {
+			//如有则调用first钩子，否则直接读取模块文件内容
 			source = (await this.pluginDriver.hookFirst('load', [id])) ?? (await readFile(id));
 		} catch (err) {
 			timeEnd('load modules', 3);
@@ -229,6 +231,7 @@ export class ModuleLoader {
 			throw err;
 		}
 		timeEnd('load modules', 3);
+		// sourceDescription => {"code":"import { age, foo, name } from './user';\r\n\r\nconst fname = foo();\r\n\r\nif (0) {\r\n\tconsole.log('这段代码不会被执行');\r\n} else {\r\n\tconsole.log('这段代码保留');\r\n}\r\n// 导出一个foo函数\r\nexport default function hello() {\r\n\tconsole.log(fname);\r\n\tconsole.log(`hello! ${name}`);\r\n}\r\n"}
 		const sourceDescription =
 			typeof source === 'string'
 				? { code: source }
@@ -331,6 +334,7 @@ export class ModuleLoader {
 			syntheticNamedExports,
 			meta
 		);
+		//缓存modules
 		this.modulesById.set(id, module);
 		this.graph.watchFiles[id] = true;
 		await this.addModuleSource(id, importer, module);

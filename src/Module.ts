@@ -696,8 +696,7 @@ export default class Module {
 
 		this.resolvedIds = resolvedIds || Object.create(null);
 
-		// By default, `id` is the file name. Custom resolvers and loaders
-		// can change that, but it makes sense to use it for the source file name
+		// 默认情况下，“id”是文件名。也可以自定义文件名称，但使用“id”作为源文件名是有意义的
 		const fileName = this.id;
 
 		this.magicString = new MagicString(code, {
@@ -706,7 +705,7 @@ export default class Module {
 		});
 
 		timeStart('analyse ast', 3);
-
+		//定义模块的context，包括根据import、export获取模块的导入和导出对象
 		this.astContext = {
 			addDynamicImport: this.addDynamicImport.bind(this),
 			addExport: this.addExport.bind(this),

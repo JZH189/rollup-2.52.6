@@ -250,7 +250,7 @@ export class PluginDriver {
 		return Promise.all(promises).then(() => {});
 	}
 
-	// chains, reduces returned value, handling the reduced value as the first hook argument
+	//将reduce的值作为第一个钩子参数处理
 	hookReduceArg0<H extends AsyncPluginHooks & SequentialPluginHooks>(
 		hookName: H,
 		[arg0, ...rest]: Parameters<PluginHooks[H]>,

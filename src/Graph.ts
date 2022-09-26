@@ -125,7 +125,7 @@ export default class Graph {
 
 	contextParse(code: string, options: Partial<acorn.Options> = {}): acorn.Node {
 		const onCommentOrig = options.onComment;
-		const comments: acorn.Comment[] = [];
+		const comments: acorn.Comment[] = [];   //收集注释
 
 		if (onCommentOrig && typeof onCommentOrig == 'function') {
 			options.onComment = (block, text, start, end, ...args) => {
@@ -146,7 +146,7 @@ export default class Graph {
 		}
 
 		options.onComment = onCommentOrig;
-
+		//添加注释，例如项目注释，版本说明
 		addAnnotations(comments, ast, code);
 
 		return ast;
