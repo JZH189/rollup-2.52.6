@@ -109,7 +109,9 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 		this.keys = keys[esTreeNode.type] || getAndCreateKeys(esTreeNode);
 		this.parent = parent;
 		this.context = parent.context;
+		//创建作用域
 		this.createScope(parentScope);
+		//重写esTreeNode结构
 		this.parseNode(esTreeNode);
 		this.initialise();
 		this.context.magicString.addSourcemapLocation(this.start);
@@ -195,6 +197,7 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 	}
 
 	parseNode(esTreeNode: GenericEsTreeNode): void {
+		//重写esTreeNode的结构
 		for (const [key, value] of Object.entries(esTreeNode)) {
 			// That way, we can override this function to add custom initialisation and then call super.parseNode
 			if (this.hasOwnProperty(key)) continue;

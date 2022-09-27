@@ -734,9 +734,11 @@ export default class Module {
 			usesTopLevelAwait: false,
 			warn: this.warn.bind(this)
 		};
-
+		//创建基于模块的作用域
 		this.scope = new ModuleScope(this.graph.scope, this.astContext);
+		//创建命名空间
 		this.namespace = new NamespaceVariable(this.astContext, this.info.syntheticNamedExports);
+		//生成模块的ast
 		this.ast = new Program(ast, { context: this.astContext, type: 'Module' }, this.scope);
 		this.info.ast = ast;
 
