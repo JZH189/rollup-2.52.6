@@ -920,10 +920,14 @@ export default class Module {
 	}
 
 	private addImport(node: ImportDeclaration) {
+		//import语句的value => './user'
 		const source = node.source.value;
+		//使用Set结构保存module.sources
 		this.sources.add(source);
 		for (const specifier of node.specifiers) {
+			//判断是否是默认导入，例如 import Vue from 'Vue'
 			const isDefault = specifier.type === NodeType.ImportDefaultSpecifier;
+			//判断是否为带命名空间的导入，例如 import * as acorn from 'acorn';
 			const isNamespace = specifier.type === NodeType.ImportNamespaceSpecifier;
 
 			const name = isDefault
@@ -931,12 +935,33 @@ export default class Module {
 				: isNamespace
 				? '*'
 				: (specifier as ImportSpecifier).imported.name;
-			this.importDescriptions[specifier.local.name] = {
-				module: null as never, // filled in later
-				name,
-				source,
-				start: specifier.start
-			};
+				this.importDescriptions[specifier.local.name] = {
+					module: null as never, // filled in later
+					name,
+					source,
+					start: specifier.start
+				};
+			/*
+			this.importDescriptions = {
+				"age": {
+						"module": null,
+						"name": "age",
+						"source": "./user",
+						"start": 9
+				},
+				"foo": {
+						"module": null,
+						"name": "foo",
+						"source": "./user",
+						"start": 14
+				},
+				"name": {
+						"module": null,
+						"name": "name",
+						"source": "./user",
+						"start": 19
+				}
+				*/
 		}
 	}
 

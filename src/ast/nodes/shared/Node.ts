@@ -111,7 +111,7 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 		this.context = parent.context;
 		//创建作用域
 		this.createScope(parentScope);
-		//重写esTreeNode结构
+		//重写esTreeNode结构，并且遍历 Program.body子节点然后实例化对应的节点Class
 		this.parseNode(esTreeNode);
 		this.initialise();
 		this.context.magicString.addSourcemapLocation(this.start);
@@ -197,7 +197,7 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 	}
 
 	parseNode(esTreeNode: GenericEsTreeNode): void {
-		//重写esTreeNode的结构
+		//重写esTreeNode的结构, 使用 for...of 遍历 Program 可枚举数据
 		for (const [key, value] of Object.entries(esTreeNode)) {
 			// That way, we can override this function to add custom initialisation and then call super.parseNode
 			if (this.hasOwnProperty(key)) continue;
@@ -211,8 +211,16 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 			} else if (typeof value !== 'object' || value === null) {
 				(this as GenericEsTreeNode)[key] = value;
 			} else if (Array.isArray(value)) {
+				//esTreeNode.body
 				(this as GenericEsTreeNode)[key] = [];
 				for (const child of value) {
+					/** 
+					 * 遍历 esTreeNode.body 节点并且根据 node.type 实例化对应的节点Class。
+					 * 举个例子，如下语句的node.type = "ImportDeclaration"
+					 * import { age, foo, name } from './user';
+					 * 那么就会执行 new ImportDeclaration(child, this, this.scope) 语句初始化node
+					 * 
+					*/
 					(this as GenericEsTreeNode)[key].push(
 						child === null
 							? null
