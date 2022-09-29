@@ -167,6 +167,7 @@ async function handleGenerateWrite(
 		unsetInputOptions
 	);
 	const bundle = new Bundle(outputOptions, unsetOptions, inputOptions, outputPluginDriver, graph);
+	//生成最终的代码
 	const generated = await bundle.generate(isWrite);
 	if (isWrite) {
 		if (!outputOptions.dir && !outputOptions.file) {
@@ -175,6 +176,7 @@ async function handleGenerateWrite(
 				message: 'You must specify "output.file" or "output.dir" for the build.'
 			});
 		}
+		//调用 fs.writeFile 写入最终的bundle文件
 		await Promise.all(Object.values(generated).map(chunk => writeOutputFile(chunk, outputOptions)));
 		await outputPluginDriver.hookParallel('writeBundle', [outputOptions, generated]);
 	}
