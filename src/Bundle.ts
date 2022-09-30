@@ -47,10 +47,14 @@ export default class Bundle {
 			await this.pluginDriver.hookParallel('renderStart', [this.outputOptions, this.inputOptions]);
 
 			timeStart('generate chunks', 2);
+			/**
+			 * chunks => [chunk]
+			 */
 			const chunks = await this.generateChunks();
 			if (chunks.length > 1) {
 				validateOptionsForMultiChunkOutput(this.outputOptions, this.inputOptions.onwarn);
 			}
+			//inputBase => c:\Users\Walmart\Desktop\study\rollup-2.52.6\example
 			const inputBase = commondir(getAbsoluteEntryModulePaths(chunks));
 			timeEnd('generate chunks', 2);
 
@@ -61,7 +65,7 @@ export default class Bundle {
 			const addons = await createAddons(this.outputOptions, this.pluginDriver);
 			this.prerenderChunks(chunks, inputBase);
 			timeEnd('render modules', 2);
-
+			//将最终的块添加到 bundle
 			await this.addFinalizedChunksToBundle(chunks, inputBase, addons, outputBundle);
 		} catch (error) {
 			await this.pluginDriver.hookParallel('renderError', [error]);
@@ -197,6 +201,9 @@ export default class Bundle {
 				: this.assignManualChunks(manualChunks);
 		const chunks: Chunk[] = [];
 		const chunkByModule = new Map<Module, Chunk>();
+		/**
+		 * this.outputOptions.preserveModules = false
+		 */
 		for (const { alias, modules } of this.outputOptions.inlineDynamicImports
 			? [{ alias: null, modules: getIncludedModules(this.graph.modulesById) }]
 			: this.outputOptions.preserveModules

@@ -120,6 +120,12 @@ function analyzeModuleGraph(entryModules: Module[]): {
 		const modulesToHandle = new Set<Module>([currentEntry]);
 		for (const module of modulesToHandle) {
 			getOrCreate(dependentEntryPointsByModule, module, () => new Set()).add(currentEntry);
+			/**
+			 * 获取相关依赖项
+			 * module.getDependenciesToBeIncluded() => [module1, module2]
+			 * module1.id 为 'c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example\\user.js'
+			 * module2.id 为 'c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example\\index.js'
+			 */
 			for (const dependency of module.getDependenciesToBeIncluded()) {
 				if (!(dependency instanceof ExternalModule)) {
 					modulesToHandle.add(dependency);
