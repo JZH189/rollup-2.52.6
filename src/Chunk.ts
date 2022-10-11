@@ -593,6 +593,14 @@ export default class Chunk {
 		for (const module of this.orderedModules) {
 			let renderedLength = 0;
 			if (module.isIncluded() || this.includedNamespaces.has(module)) {
+				/**
+				 * 遍历nodeTree,如果node.included为false则执行treeshaking逻辑删除无用代码块
+				 * 最后得到module.source，如下示例：
+				 * 'const name = "victor jiang";
+						function foo() {
+							return "foo";
+						}'
+				 * */
 				const source = module.render(renderOptions).trim();
 				renderedLength = source.length();
 				if (renderedLength) {

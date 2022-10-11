@@ -63,8 +63,7 @@ export function findNonWhiteSpace(code: string, index: number): number {
 	return result.index;
 }
 
-// This assumes "code" only contains white-space and comments
-// Returns position of line-comment if applicable
+// 这假定“代码”仅包含空格和注释,返回行注释的位置
 function findFirstLineBreakOutsideComment(code: string): [number, number] {
 	let lineBreakPos,
 		charCodeAfterSlash,
@@ -104,14 +103,17 @@ export function renderStatementList(
 		currentNodeStart = nextNodeStart;
 		currentNodeNeedsBoundaries = nextNodeNeedsBoundaries;
 		nextNode = statements[nextIndex];
+		//下一个node节点无需保留
 		nextNodeNeedsBoundaries =
 			nextNode === undefined ? false : !nextNode.included || nextNode.needsBoundaries;
 		if (currentNodeNeedsBoundaries || nextNodeNeedsBoundaries) {
+			//下一个语句的start计算
 			nextNodeStart =
 				currentNode.end +
 				findFirstLineBreakOutsideComment(
 					code.original.slice(currentNode.end, nextNode === undefined ? end : nextNode.start)
 				)[1];
+			// 如果节点的included为false则删除该节点
 			if (currentNode.included) {
 				currentNodeNeedsBoundaries
 					? currentNode.render(code, options, {

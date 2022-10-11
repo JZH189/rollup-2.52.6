@@ -656,6 +656,7 @@ export default class Module {
 
 	render(options: RenderOptions): MagicString {
 		const magicString = this.magicString.clone();
+		//此处其实调用的就是Program.render方法
 		this.ast!.render(magicString, options);
 		this.usesTopLevelAwait = this.astContext.usesTopLevelAwait;
 		return magicString;
