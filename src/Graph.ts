@@ -177,6 +177,9 @@ export default class Graph {
 	};
 
 	private async generateModuleGraph(): Promise<void> {
+		/**
+		 * normalizeEntryModules(this.options.input) => '[{"fileName":null,"id":"c:\\Users\\Walmart\\Desktop\\study\\rollup-2.52.6\\example/index.js","implicitlyLoadedAfter":[],"name":null}]'
+		 */
 		({ entryModules: this.entryModules, implicitEntryModules: this.implicitEntryModules } =
 			await this.moduleLoader.addEntryModules(normalizeEntryModules(this.options.input), true));
 		if (this.entryModules.length === 0) {
