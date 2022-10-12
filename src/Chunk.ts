@@ -594,7 +594,7 @@ export default class Chunk {
 			let renderedLength = 0;
 			if (module.isIncluded() || this.includedNamespaces.has(module)) {
 				/**
-				 * 遍历nodeTree,如果node.included为false则执行treeshaking逻辑删除无用代码块
+				 * 遍历nodeTree,如果node.included为false则调用magicString.remove,magicString.overwrite等方法删除或者修改代码字符串
 				 * 最后得到module.source，如下示例：
 				 * 'const name = "victor jiang";
 						function foo() {

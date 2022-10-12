@@ -83,7 +83,7 @@ export default class IfStatement extends StatementBase implements DeoptimizableE
 		// Note that unknown test values are always included
 		const testValue = this.getTestValue();
 		const hoistedDeclarations: Identifier[] = [];
-		const includesIfElse = this.test.included;
+		const includesIfElse = this.test.included; //includesIfElse表示IfStatement.test的值
 		const noTreeshake = !this.context.options.treeshake;
 		if (includesIfElse) {
 			this.test.render(code, options);
