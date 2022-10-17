@@ -89,6 +89,7 @@ export class ModuleLoader {
 					({ id, importer }): Promise<Module> => this.loadEntryModule(id, true, importer, null)
 				)
 			).then(entryModules => {
+				// entryModules => [Module]
 				let moduleIndex = firstEntryModuleIndex;
 				for (let index = 0; index < entryModules.length; index++) {
 					const entryModule = entryModules[index];
@@ -105,6 +106,7 @@ export class ModuleLoader {
 					}
 					moduleIndex++;
 				}
+				//排序入口模板
 				this.indexedEntryModules.sort(({ index: indexA }, { index: indexB }) =>
 					indexA > indexB ? 1 : -1
 				);
