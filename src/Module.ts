@@ -581,6 +581,7 @@ export default class Module {
 	}
 
 	include(): void {
+		//context => {"brokenFlow":0,"includedCallArguments":{},"includedLabels":{}}
 		const context = createInclusionContext();
 		if (this.ast!.shouldBeIncluded(context)) this.ast!.include(context, false);
 	}
