@@ -26,6 +26,7 @@ export function analyseModuleExecution(entryModules: Module[]): {
 
 	const analyseModule = (module: Module | ExternalModule) => {
 		if (module instanceof Module) {
+			//module.dependencies => userModule
 			for (const dependency of module.dependencies) {
 				if (parents.has(dependency)) {
 					if (!analysedModules.has(dependency)) {
@@ -34,6 +35,7 @@ export function analyseModuleExecution(entryModules: Module[]): {
 					continue;
 				}
 				parents.set(dependency, module);
+				//第二次调用analyseModule会curEntry.dependence放入orderedModules
 				analyseModule(dependency);
 			}
 
@@ -53,8 +55,10 @@ export function analyseModuleExecution(entryModules: Module[]): {
 	};
 
 	for (const curEntry of entryModules) {
+		// curEntry => indexModule
 		if (!parents.has(curEntry)) {
 			parents.set(curEntry, null);
+			//第一次调用analyseModule会将curEntry.dependence放入orderedModules
 			analyseModule(curEntry);
 		}
 	}

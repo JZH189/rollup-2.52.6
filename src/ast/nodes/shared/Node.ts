@@ -111,7 +111,10 @@ export class NodeBase extends ExpressionEntity implements ExpressionNode {
 		this.context = parent.context;
 		//创建作用域
 		this.createScope(parentScope);
-		//重写esTreeNode结构，并且遍历 Program.body子节点然后实例化对应的节点Class
+		/**
+		 * 这一步很重要：
+		 * 重写Program结构，基于esTreeNode扩展node节点（实例化ast.nodes，并且继承node的方法和属性。例如将node.incluede设置为false等等）
+		*/
 		this.parseNode(esTreeNode);
 		this.initialise();
 		this.context.magicString.addSourcemapLocation(this.start);

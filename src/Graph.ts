@@ -196,6 +196,7 @@ export default class Graph {
 
 	private includeStatements() {
 		for (const module of [...this.entryModules, ...this.implicitEntryModules]) {
+			//module.preserveSignature = 'strict'
 			if (module.preserveSignature !== false) {
 				module.includeAllExports(false);
 			} else {
