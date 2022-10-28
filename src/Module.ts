@@ -691,6 +691,7 @@ export default class Module {
 		timeStart('generate ast', 3);
 
 		if (!ast) {
+			//调用acorn.parse()方法解析成ast
 			ast = this.tryParse();
 		}
 
@@ -740,7 +741,7 @@ export default class Module {
 		this.scope = new ModuleScope(this.graph.scope, this.astContext);
 		//创建命名空间
 		this.namespace = new NamespaceVariable(this.astContext, this.info.syntheticNamedExports);
-		//生成模块的ast
+		//创建Program,设置node.included = false初始化node属性和方法
 		this.ast = new Program(ast, { context: this.astContext, type: 'Module' }, this.scope);
 		this.info.ast = ast;
 
